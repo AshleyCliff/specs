@@ -5,13 +5,12 @@ title: release policy and notes for Charmed Slurm
 
 # Abstract
 
-This spec details the release policy and release notes format for Charmed Slurm releases. Charmed Slurm contains the Slurm workload manager and related infrastructure components such as observability and scaling.
+This spec details the release policy for Charmed Slurm releases. Charmed Slurm contains the Slurm workload manager and related infrastructure components.
 
 # Rationale
 
-For a given product, a consistent release policy and release notes format is necessary to update users and developers
-on the updates and changes to the product. Different products, both Canonical and upstream, have a variety of release
-policies and cadances, and requires a plan of action to best align Charmed HPC's releases.
+For a given product, a consistent release policy is necessary to update users and developers
+on the updates and changes to the product. Different products, both Canonical and upstream, have a variety of release policies and cadances, and requires a plan of action to best align Charmed Slurms's releases.
 
 # Specification
 
@@ -19,18 +18,7 @@ policies and cadances, and requires a plan of action to best align Charmed HPC's
 
 Current release cadence will be based around feature implementation and upstream Slurm releases, which happen twice a year. Exact timing will vary, and all major releases will be announced.
 
-
-### Cadence considerations
-
-* Don't tie release to one specific upstream, or Ubuntu
-* Not currently in a position to commit to LTS releases
-* Potentially a yearly release - 'Charmed HPC 2025.1'
-* Focus on how the charms are released
-  * When is 'stable' reached for a given charm
-  * Core features early in cycle to have an idea by mid-cycle for what's needed to finish cycle strong
-
-
-## Upstream dependencies and release cadences
+### Upstream dependencies release cadences
 
 * Slurm - major releases are twice a year
 * Ubuntu - minor release twice a year, LTS release every other year
@@ -43,55 +31,64 @@ Current release cadence will be based around feature implementation and upstream
   * Note that running `juju refresh` is necessary to pull latest security and bug fix updates
 
 
-### Release channels
+### Release channels and branches
+
+* For each major release, each Charmed Slurm charm will have its own Charmhub track using the upstream Slurm version in `YY.MM` notation, e.g. `25.11`
+  * With a corresponding GitHub branch
 
 * Edge, the development channel
-* Candidate, test the new release before publishing (to catch early bugs)
+* Candidate/beta, test the new release before publishing (to catch early bugs)
 * Stable
-
-* Each release has its own track
-  * Corresponding GitHub branch and each of the three channels
-  * Corrensponding commit hash is included in the charm channel release
-* No breaking changes should be made to integrations, configuration options, or actions in a stable track of a charm
-  * To introduce breaking changes, a new track should be created
-
-* 'stable' vs 'edge' for slurm charms
-  * how to handle when one charm updates but not others?
+  * No breaking changes should be made to integrations, configuration options, or actions once the stable channel has been established
 
 ## Documentation
 
 * User is expected to use the charm version that comes with a specific release
-  * Cannot guarantee 'Franken'-charm collections
-  * If a user requirement necessitates versions that are not from the same release, they should open an issue on Github
-(or Support Discussion) and contact the team
+  * Cannot guarantee cross-compatibility of charm versions from different releases
+  * If a user requirement necessitates versions that are not from the same release, they should open an issue on Github or contact the team
 
 ## Support Timeframe
 
-Each major release will be supported for 18 months. For major commercial offerings, there will also be a 10 LTS (long-term support) release.
+Each major release will be supported for [TBD]. For major commercial offerings, there will also be a [TBD] LTS (long-term support) release.
 
 ## Process for updates
 
 * Docementation for migrating to a new version
 * Dedicate a team member to doing upgrade/refresh tests
-* Ubuntu version updates will likely be more costly than service version
 
 ### Security Patches
 
 * Pushed to edge, release after standard testing process
 
-## Supported Artifacts
+## Release notes template
 
-<!-- List of supported artifacts with source code links and issue tracker refs
- -->
+```markdown
+# Charmed Slurm `YY.MM` release notes
 
-### Release Structure
+Release date: <date>
 
-<!-- Table of corresponding pieces and commit/channel/tag/etc for each:
+## Charm versions
 
-* E.g. stable release of the Slurm charms are published to 25.04/stable on Charmhub
-  * ^ Mirror this bit in the release notes. E.g. how do you actually pull Charmed Slurm 25.04
-* PPA to get supported Slurm packages.
-* Any Terraform plans for reference deployment (maybe, homies could just pull from the correct channel) -->
+| Charm | Track | Revision |
+|-------|-------|----------|
+| slurmctld | <track> | <revision> |
+| slurmd | <track> | <revision> |
+| slurmdbd | <track> | <revision> |
+| slurmrestd | <track> | <revision> |
+| slurm-configurator | <track> | <revision> |
+
+## What's new
+
+## Requirements and compatibility
+
+## Deprecations and breaking changes
+
+## Fixed issues
+
+## Known issues
+```
+
+
 
 ## Examples
 
@@ -142,3 +139,4 @@ General Release Notes sections:
 |:--------|:--------|:--------------------|:------------|
 | 2025-07-09 | Braindump | [Ashley Cliff](mailto:ashley.cliff@canonical.com) | Initial braindump |
 | 2025-07-15 | Braindump | [Ashley Cliff](mailto:ashley.cliff@canonical.com) | Initial braindump |
+| 2026-06-26 | Draft | [Ashley Cliff](mailto:ashley.cliff@canonical.com) | Added release notes template and updated version notation |
