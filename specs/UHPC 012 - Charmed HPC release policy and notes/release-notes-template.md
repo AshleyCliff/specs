@@ -1,25 +1,31 @@
-# Charmed HPC <major release>.<patch version #> Release Notes
+# Charmed HPC <major>.<minor> Release Notes
 
 Release date: YYYY-MM-DD
 
 ## Summary
 
-Brief overview of this release, including the primary focus (e.g., new Ubuntu base,
-new artifact versions, bug fixes, security updates).
+Release type: Major release / Minor feature update / Bug or security patch
+
+<Brief overview of this release, including the primary focus (e.g., new Ubuntu base,
+new upstream releases such as Slurm or Lustre, new features, bug fixes, security updates).>
 
 ## Artifacts in this release
 
 | Artifact | Track | Revision | Notes |
 |----------|-------|----------|-------|
-| Charmed Slurm | <track> | <revision> | See [Charmed Slurm release notes] |
+| slurmctld | <track> | <revision> | |
+| slurmd | <track> | <revision> | |
+| slurmdbd | <track> | <revision> | |
+| sackd | <track> | <revision> | |
+| slurmrestd | <track> | <revision> | |
 | apptainer-operator | <track> | <revision> | |
 | cephfs-server-proxy | <track> | <revision> | |
 | filesystem-client | <track> | <revision> | |
 | lustre-server-proxy | <track> | <revision> | |
 | nfs-server-proxy | <track> | <revision> | |
-| test-mount-client | <track> | <revision> | |
 | lustre-server | <track> | <revision> | |
 | sssd-operator | <track> | <revision> | |
+| openssh-operator | <track> | <revision> | |
 
 ## What's new
 
@@ -41,6 +47,12 @@ new artifact versions, bug fixes, security updates).
 
 ## Requirements and compatibility
 
+This release is supported only on the Ubuntu base and Juju versions listed below, and
+only with the artifact and third-party charm versions listed in these release notes.
+Compatibility is only guaranteed between charm revisions from this release
+(<major>.<minor>). Mixing revisions from any other release, including other minor
+releases of the same major release, is not supported.
+
 ### Supported Ubuntu base
 
 - Ubuntu <version> LTS (<codename>)
@@ -58,55 +70,44 @@ in combination with the versions listed below.
 | Charm | Channel | Revision | Required by | Notes |
 |-------|---------|----------|-------------|-------|
 | mysql | 8.4/stable | <revision> | slurmdbd | |
+| cos-lite | <channel> | <revision> | slurmctld | Observability via cos-agent; Kubernetes; cross-model |
+| authentik-server | <channel> | <revision> | sssd | Optional, for identity; Kubernetes; cross-model |
 | smtp-integrator | <channel> | <revision> | slurmctld | Optional, for email notifications |
 
-## Support matrix
 
-| Combination | Tested | Depth of testing | Supported |
-|-------------|--------|------------------|-----------|
-| <artifact> on <Ubuntu base> with <Juju version> | Yes/No | Unit / integration / scale / full QA | Supported / Unsupported |
+## Breaking changes
 
-Unsupported combinations:
-
-- Mixing artifact versions from different Charmed HPC releases.
-- Ubuntu bases other than the base listed above.
-
-## Backwards incompatible changes
+Major releases only; breaking changes are not made in minor releases.
 
 - Change description and required user action, if any.
 
 ## Deprecated features
 
-- Feature or option that is deprecated, with recommended alternative.
+- Feature or option that is deprecated, with recommended alternative and anticipated removal date.
 
 ## Known issues
 
 - Issue description and any available workaround.
 
-## Upgrade notes
+<!--## Upgrade notes
 
 Only upgrades between minor versions within the same major release are supported.
-
-### Refreshing charms
-
-```bash
-juju refresh <charm-name> --channel <track>/stable
-```
+All charms must be refreshed to this release; mixing revisions from different releases
+is not supported.
 
 ## Support lifecycle
 
 | Release | Release date | End of support |
 |---------|--------------|----------------|
-| <major release>.<patch version #> | YYYY-MM-DD | YYYY-MM-DD |
+| <major>.<minor> | YYYY-MM-DD | YYYY-MM-DD |
 
 Bug and security fix support is tied to the Ubuntu LTS release this version is built against, and is provided under the terms of Ubuntu Pro support.
-
+-->
 ## Acknowledgements
 
-We appreciate the contributions of the Slurm open source community, and of the
-upstream communities behind the other projects Charmed HPC builds on.
+<Acknowledge contributions for upstream contributions to artifacts (Slurm, Lustre, etc.)>
 
 ## References
 
 - [Charmed HPC release policy](link to this spec)
-- [Charmed Slurm release notes](link)
+- [Charmed HPC Risk Gate policy]()
