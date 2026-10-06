@@ -4,7 +4,7 @@ Release date: YYYY-MM-DD
 
 ## Summary
 
-Release type: Major release / Minor feature update / Bug or security patch
+Release type: Major release / Minor feature release (scheduled) / Minor patch release (unscheduled)
 
 <Brief overview of this release, including the primary focus (e.g., new Ubuntu base,
 new upstream releases such as Slurm or Lustre, new features, bug fixes, security updates).>
@@ -28,6 +28,9 @@ new upstream releases such as Slurm or Lustre, new features, bug fixes, security
 | openssh-operator | <track> | <revision> | |
 
 ## What's new
+
+Omit this section in a minor patch release; minor patch releases do not add features or
+improvements.
 
 ### New features
 
