@@ -49,9 +49,24 @@ new upstream releases such as Slurm or Lustre, new features, bug fixes, security
 
 This release is supported only on the Ubuntu base and Juju versions listed below, and
 only with the artifact and third-party charm versions listed in these release notes.
-Compatibility is only guaranteed between charm revisions from this release
-(<major>.<minor>). Mixing revisions from any other release, including other minor
-releases of the same major release, is not supported.
+The set of versions listed here is the combination that has been tested together.
+
+Components from different minor releases of the same major release (<major>.x) are
+designed to be forward compatible: older components can interact with newer ones, but
+features introduced in a newer minor release are not available to components from an
+older minor release. Mismatched component versions are not officially tested; please open an issue if you encounter a problem with a mismatched combination.
+
+There is no compatibility promise between components from different major releases.
+
+### Upstream bases
+
+All <major>.x releases are built and tested against the upstream versions below. These
+do not change within a major release.
+
+| Upstream project | Version |
+|------------------|---------|
+| Slurm | <version> |
+| Lustre | <version> |
 
 ### Supported Ubuntu base
 
@@ -92,8 +107,9 @@ Major releases only; breaking changes are not made in minor releases.
 <!--## Upgrade notes
 
 Only upgrades between minor versions within the same major release are supported.
-All charms must be refreshed to this release; mixing revisions from different releases
-is not supported.
+Refreshing all charms to this release is recommended, since that is the combination
+that has been tested; features introduced in this release are unavailable until all
+participating charms have been refreshed.
 
 ## Support lifecycle
 

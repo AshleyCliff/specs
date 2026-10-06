@@ -9,7 +9,7 @@ title: Release policy for Charmed HPC
 
 This spec defines the release policy for Charmed HPC, a single product underpinned by a portfolio of charms and supporting artifacts.
 
-The policy covers the versioning scheme (`<major>.<minor>`), the release schedule (one major release batching breaking changes and new upstream releases, and one minor feature update, per six-month cycle), how bug and security patch timing is gated on criticality, how these relate to upstream release cadences (e.g. Slurm), the Ubuntu base a release is built against, the soft-freeze / hard-freeze / release-day points that gate promotion between risk statuses, and the format and sections of the published release notes. The risk statuses themselves (`edge`, `beta`, `candidate`, `stable`) and the testing required to reach each are defined in the companion [UHPC 017](../UHPC%20017%20-%20Charm%20and%20solution%20promotion%20criteria%20for%20Charmed%20HPC/uhpc017.md). A companion [Release Notes Template](release-notes-template.md) accompanies this spec.
+The policy covers the versioning scheme (`<major>.<minor>`), the compatibility model (forward compatibility between minor releases of the same major release), the release schedule (one major release batching breaking changes and new upstream releases, and one minor feature update, per six-month cycle), how bug and security patch timing is gated on criticality, how these relate to upstream release cadences (e.g. Slurm), the Ubuntu base a release is built against, the soft-freeze / hard-freeze / release-day points that gate promotion between risk statuses, and the format and sections of the published release notes. The risk statuses themselves (`edge`, `beta`, `candidate`, `stable`) and the testing required to reach each are defined in the companion [UHPC 017](../UHPC%20017%20-%20Charm%20and%20solution%20promotion%20criteria%20for%20Charmed%20HPC/uhpc017.md). A companion [Release Notes Template](release-notes-template.md) accompanies this spec.
 
 ## Rationale
 
@@ -20,6 +20,7 @@ Charmed HPC is a composition of multiple charms and supporting artifacts, some o
 * When new features, bug fixes, and security updates can be expected across the set of charms.
 * Which charm versions have been verified to work together as a single Charmed HPC release.
 * What compatibility guarantees apply to a `Stable` channel (no breaking changes to integrations, configuration options, or actions).
+* How components from different minor releases of the same major release behave when deployed together, and what is tested.
 * How long a given Charmed HPC release is supported, and what "end of support" means.
 * What information is published in release notes, and in what format.
 
@@ -82,9 +83,35 @@ Version format: `<major>.<minor>`. Example Charmed HPC release numbers:
 
 #### Supported versions
 
-The release notes for each Charmed HPC release list the supported Ubuntu base, the supported Juju version range, and the versions of each Charmed HPC artifact and third-party charm included in or tested with the release. Only the listed versions are promised to work together.
+The release notes for each Charmed HPC release list the supported Ubuntu base, the supported Juju version range, and the versions of each Charmed HPC artifact and third-party charm included in or tested with the release. Only the listed versions are tested together as a release.
 
-Compatibility is only guaranteed between charm revisions from the **same major and minor release** (e.g. all charms from `2.1`). There is no promise of compatibility between charm revisions from different releases, including different minor releases within the same major release (e.g. mixing `2.0` and `2.1` revisions). Any such combination is not supported.
+#### Compatibility between minor releases
+
+Charmed HPC components from different minor releases of the **same major release** are designed to be **forward compatible**: a component from an older minor release can interact with, and accept data and components from, a newer minor release of the same major release, although features introduced in the newer minor release are unlikely to be available to it.
+
+Forward compatibility within a major release is achieved by holding the following stable for the lifetime of that major release:
+
+* **Component interfaces** - the integrations exchanged between Charmed HPC charms. Interfaces may gain optional additions, but existing fields and semantics do not change.
+* **Ubuntu base** - see [Ubuntu base support](#ubuntu-base-support).
+* **Upstream bases** - the major upstream versions the release is built and tested against. For example, all Charmed HPC `1.X` releases are built and tested against Slurm 25.11.
+
+Changes to any of the above are breaking changes and are therefore only made in a new major release. There is no compatibility promise between components from **different major releases** (e.g. mixing `1.X` and `2.X` components); such combinations are not supported.
+
+#### Feature availability and deprecation within a major release
+
+Following from the forward compatibility statement above, a feature introduced in a minor release is **not** made available to previous minor releases. To use a new feature, all components that participate in it must be refreshed to the minor release that introduced it, or later.
+
+A new feature may deprecate an existing feature within the same major release. When this happens:
+
+* The deprecation is announced in the release notes of the release that introduces the replacement, together with the recommended alternative.
+* The deprecated feature continues to be supported for an announced period of time or number of releases, which is stated at the point of deprecation.
+* Removal of the deprecated feature is a breaking change and therefore only occurs in a new major release, at or after the end of the announced support period.
+
+#### Mixed-version deployments
+
+The number of possible combinations of Charmed HPC component versions makes exhaustive cross-component version testing impractical, so **mismatched component versions are not officially tested**. Testing is performed against the set of versions listed in a single release's release notes.
+
+Mismatched versions within the same major release are intended to work by virtue of the forward compatibility design described above, but are not guaranteed. Issues encountered with mismatched component versions are accepted on GitHub (or Discourse) and are used to improve compatibility.
 
 #### Ubuntu base support
 
@@ -190,8 +217,11 @@ Bug and security fix support for each Charmed HPC release is tied to the **Ubunt
 
 Warnings/limitations that will be included in the published documentation alongside the release notes:
 
-* Charmed HPC only guarantees compatibility between charm revisions from the same major and minor release. Revisions from different releases, including different minor releases within the same major release, are not guaranteed to work together
-  * If a user requirement necessitates artifact versions that are not from a single release, they should open an issue on GitHub (or Discourse) and work with the team.
+* Charmed HPC components from different minor releases of the same major release are designed to be forward compatible: older components can interact with newer ones, but features introduced in a newer minor release are not available to components from an older minor release
+* Only the set of versions listed in a single release's release notes is tested together. 
+  * Issues encountered when running mismatched component versions should be opened on GitHub (or Discourse); they are accepted and used to improve compatibility.
+* There is no compatibility promise between components from different major releases; such combinations are not supported
+* Deprecated features remain supported for the period of time or number of releases announced at the point of deprecation, and are only removed in a new major release
 
 #### Release Notes Template
 
@@ -221,7 +251,7 @@ Only upgrades between **minor versions** within the same major release are suppo
 
 > **[DECISION NEEDED]** Are minor upgrades required to be sequential (e.g. `.1` to `.2` to `.3`), or may versions be skipped? Review proposed supporting only sequential upgrades initially.
 
-All charms in a deployment must be refreshed to the same Charmed HPC release. Because compatibility is only guaranteed between revisions from the same major and minor release, refreshing a subset of charms to a newer release while leaving others at their current revisions is not supported.
+Refreshing all charms in a deployment to the same Charmed HPC release is recommended, since only that combination is tested. Refreshing a subset of charms to a newer minor release within the same major release is expected to work by virtue of forward compatibility, but is not officially tested, and features introduced in the newer minor release are unavailable until all participating charms are refreshed.
 
 > **[DECISION NEEDED]** A refresh necessarily passes through a state where some charms are at the new release and others are not. Is this transient state supported during an upgrade, and if so, what refresh ordering is required?
 
