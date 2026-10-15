@@ -29,7 +29,7 @@ new upstream releases such as Slurm or Lustre, new features, bug fixes, security
 
 ## What's new
 
-Omit this section in a minor patch release; minor patch releases do not add features or
+Omit this section in a minor **patch** release; minor patch releases do not add features or
 improvements.
 
 ### New features
@@ -42,15 +42,15 @@ improvements.
 
 ## Bug fixes
 
-Always include this section. Bug fixes are only included in a minor patch release; in a
-major release or a minor feature release, state explicitly that none are included.
+Always include this section. Any kind of release may contain bug fixes; if this release
+contains none, state so explicitly.
 
 - Bug description, the artifact(s) affected, and a link to the issue.
 
 ## Security fixes
 
-Always include this section. Security fixes are only included in a minor patch release;
-in a major release or a minor feature release, state explicitly that none are included.
+Always include this section. Any kind of release may contain security fixes; if this
+release contains none, state so explicitly.
 
 - CVE or advisory reference, the artifact(s) affected, and the severity.
 

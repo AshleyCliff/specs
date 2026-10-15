@@ -11,7 +11,7 @@ This specification defines the release policy for Charmed HPC, a single product 
 
 Releases are numbered `<major>.<minor>`. A major release may introduce breaking changes and new major upstream versions; a minor release may not. Within a major release, components are forward compatible, so a component from an older minor release continues to interoperate with newer ones, although it cannot use features introduced after it.
 
-There are two scheduled release slots per six-month cycle: one major release, which batches breaking changes and new major upstream versions such as Slurm, and one minor feature release. Minor patch releases carrying bug and security fixes fall outside this schedule entirely; they are cut as needed, with their timing gated on the criticality of the issue being fixed rather than on the cycle calendar. Each release is built against a single Ubuntu base, which can only change in a major release.
+There are two scheduled release slots per six-month cycle: one major release, which batches breaking changes and new major upstream versions such as Slurm, and one minor feature release. Any release may carry bug and security fixes, but a minor patch release carries nothing else; these fall outside the schedule entirely and are cut as needed, with their timing gated on the criticality of the issue being fixed rather than on the cycle calendar. Each release is built against a single Ubuntu base, which can only change in a major release.
 
 Within a scheduled cycle, three freeze points - soft freeze, hard freeze, and release day - gate the promotion of each charm between risk statuses. This specification defines those freeze points and what must be complete by each. The risk statuses themselves (`edge`, `beta`, `candidate`, `stable`) and the testing required to reach each are defined in the companion [UHPC 017](../UHPC%20017%20-%20Charm%20and%20solution%20promotion%20criteria%20for%20Charmed%20HPC/uhpc017.md).
 
@@ -23,7 +23,7 @@ A consistent release policy is necessary to keep our stakeholders aware of upcom
 
 Charmed HPC is a composition of multiple charms and supporting artifacts, some of which (for example, the Slurm charms) operate upstream projects that follow their own release cadences. There must be a well-defined, product-wide release policy that developers and users can reference to know:
 
-* When new features can be expected (the one scheduled major release and minor feature release per cycle) as distinct from when bug fixes and security updates can be expected (unscheduled minor patch releases, as needed).
+* When new features can be expected (the one scheduled major release and minor feature release per cycle) as distinct from when bug fixes and security updates can be expected (any release may carry them, and unscheduled minor patch releases are cut as needed for those that cannot wait).
 * Which charm versions have been verified to work together as a single Charmed HPC release.
 * What compatibility guarantees apply to a `stable` channel (no breaking changes to integrations, configuration options, or actions).
 * How components from different minor releases of the same major release behave when deployed together, and what is tested.
@@ -88,9 +88,11 @@ Charmed HPC has three kinds of release. One is a major release; the other two ar
 
 | Kind | Version change | Timing | Contains |
 |------|----------------|--------|----------|
-| **Major release** | `X.Y` → `X+1.0` | Scheduled, once per six-month cycle | Breaking changes (integrations, configuration options, actions, Ubuntu base) and/or new major upstream releases (for example, Slurm 27.05) |
-| **Minor feature release** | `X.Y` → `X.Y+1` | Scheduled, once per six-month cycle; subject to the freeze points in [Release cycle and feature freezes](#release-cycle-and-feature-freezes) | New features only; no breaking changes, no new major upstream releases |
+| **Major release** | `X.Y` → `X+1.0` | Scheduled, once per six-month cycle | Breaking changes (integrations, configuration options, actions, Ubuntu base) and/or new major upstream releases (for example, Slurm 27.05); may also contain new features, bug fixes, and/or security fixes |
+| **Minor feature release** | `X.Y` → `X.Y+1` | Scheduled, once per six-month cycle; subject to the freeze points in [Release cycle and feature freezes](#release-cycle-and-feature-freezes) | New features, and any bug fixes and/or security fixes ready at the time it is cut; no breaking changes, no new major upstream releases (may contain minor upstream patches) |
 | **Minor patch release** | `X.Y` → `X.Y+1` | Unscheduled, as needed; timing gated on criticality | Bug fixes and/or security fixes only; no new features, no breaking changes, no new major upstream releases (may contain minor upstream patches)|
+
+A minor feature release may also include whatever bug and security fixes are ready when it is cut, while a minor patch release is restricted to fixes alone. A major release may likewise include fixes alongside its breaking changes and upstream updates.
 
 Both minor releases increment the same minor component, so the version number alone does not distinguish a minor feature release from a minor patch release. The release notes state which kind a release is (see [Release notes sections](#release-notes-sections)).
 
@@ -166,13 +168,13 @@ Moving to a new Ubuntu base is a breaking change, so a new base is only introduc
 Charmed HPC has two scheduled release slots per six-month cycle (four per year): one major release and one minor feature release, alternating approximately every three months. Cycles are late May to late October and early November to early May.
 
 * **Major releases** (`X+1.0`) occupy one scheduled slot per cycle. A major release batches together breaking changes and/or new upstream releases of the underlying software (such as Slurm and Lustre); for example, a major release cut in October 2027 would include Slurm 27.05. Breaking changes and new upstream releases are held back from minor releases until the next major release. If there are no breaking changes or new upstream releases to batch, that slot is a minor feature release instead.
-* **Minor feature releases** (`X.Y+1`) occupy the other scheduled slot per cycle, intended to be between major releases. Each contains new features that introduce no breaking changes.
+* **Minor feature releases** (`X.Y+1`) occupy the other scheduled slot per cycle, intended to be between major releases. Each contains new features that introduce no breaking changes, together with any bug and security fixes ready at the time it is cut.
 
 Minor patch releases are **not** part of this schedule and do not consume a slot.
 
 #### Minor patch releases
 
-Minor patch releases (bug and security fixes) are **unscheduled**. They are cut as needed, outside the two scheduled slots, and their timing is gated on the criticality of the issue being fixed rather than on the cycle calendar. A cycle may contain any number of minor patch releases, including none.
+Minor patch releases (bug and security fixes) are **unscheduled**. They are cut as needed, outside the two scheduled slots, and their timing is gated on the criticality of the issue being fixed rather than on the cycle calendar. A cycle may contain any number of minor patch releases, including none - a fix that is not urgent enough to warrant its own release may instead ship in the next scheduled release.
 
 #### Release channels and branches
 
