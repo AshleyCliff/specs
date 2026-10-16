@@ -28,7 +28,7 @@ Charmed HPC is a composition of multiple charms and supporting artifacts, some o
 * What compatibility guarantees apply to a `stable` channel (no breaking changes to integrations, configuration options, or actions).
 * How components from different minor releases of the same major release behave when deployed together, and what is tested.
 * What information is published in release notes, and in what format.
-<!--* How long a given Charmed HPC release is supported, and what "end of support" means.-->
+<!--* **[DECISION NEEDED]** How long a given Charmed HPC release is supported, and what "end of support" means.-->
 
 Without such a policy, users cannot reliably schedule upgrades, security patching, or feature adoption across a Charmed HPC deployment, and the maintainers lack a shared reference for release planning, freeze dates, and channel promotion criteria.
 

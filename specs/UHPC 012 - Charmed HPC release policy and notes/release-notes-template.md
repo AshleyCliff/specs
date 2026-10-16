@@ -127,9 +127,7 @@ These charms are deployed on Kubernetes and integrated cross-model.
 
 #### Canonical Observability Stack (COS)
 
-Observability for Charmed HPC uses the Canonical Observability Stack, which is a large
-group of charms rather than a single charm or a small set. Instead of listing each COS
-charm individually, this release is supported with COS track <track>. The charm
+This release is supported with COS track <track>. The charm
 channels and revisions that make up that track are published by the Observability team:
 
 - [COS <track> release notes](https://documentation.ubuntu.com/observability/track-<track>/release-notes/)
